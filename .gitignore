@@ -1,4 +1,5 @@
 *.qmlc
+*.jsc
 .tags
 build-*/
 card_counter.pro.user
