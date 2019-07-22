@@ -70,6 +70,14 @@ ApplicationWindow {
                     drawer.close()
                 }
             }
+            ItemDelegate {
+                text: qsTr("View all cards")
+                width: parent.width
+                onClicked: {
+                    stackView.push("DeckBuild/CardsOnlyPage.qml")
+                    drawer.close()
+                }
+            }
         }
     }
 
