@@ -59,16 +59,15 @@ T.Button {
     padding: 12
     spacing: 12
 
+    font.bold: false
+    font.capitalization: Font.MixedCase
+
     contentItem: Text {
         leftPadding: control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
         rightPadding: !control.mirrored ? (control.indicator ? control.indicator.width : 0) + control.spacing : 0
 
         text: control.text
         font: control.font
-        Component.onCompleted: {
-            font.bold = false
-            font.capitalization = Font.MixedCase
-        }
         color: control.enabled ? Default.textDarkColor : Default.textDisabledColor
         elide: Text.ElideRight
         verticalAlignment: Text.AlignVCenter
