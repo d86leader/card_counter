@@ -1,20 +1,12 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import "../MyControls" as MC
+import "../Common" as C
 
 // Lists all cards in one deck
 
-ListView {
+C.CardListing {
     id: listView
-    spacing: -1
-
-    ScrollBar.vertical: ScrollBar {
-         policy: ScrollBar.AsNeeded
-    }
-
-    header: MC.SearchField {
-        width: parent.width
-    }
 
     footer: MC.Button {
         width: parent.width
