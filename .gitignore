@@ -1,0 +1,5 @@
+*.qmlc
+.tags
+build-*/
+card_counter.pro.user
+main
