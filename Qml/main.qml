@@ -1,8 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import "./GameView" as GameView
-import "./DeckBuild" as DeckBuild
+import "./Landing/" as Landing
 
 ApplicationWindow {
     id: window
@@ -55,26 +54,11 @@ ApplicationWindow {
             anchors.fill: parent
 
             ItemDelegate {
-                text: qsTr("Deck builder")
-                width: parent.width
-                onClicked: {
-                    stackView.openPage("DeckBuild/Page.qml", {})
-                    drawer.close()
-                }
-            }
-            ItemDelegate {
-                text: qsTr("Game view")
-                width: parent.width
-                onClicked: {
-                    stackView.openPage("GameView/Page.qml", {})
-                    drawer.close()
-                }
-            }
-            ItemDelegate {
                 text: qsTr("View all cards")
                 width: parent.width
                 onClicked: {
-                    stackView.openPage("DeckBuild/CardsOnlyPage.qml", {})
+                    var item = Qt.resolvedUrl("./DeckBuild/CardsOnlyPage.qml")
+                    stackView.openPage(item, {})
                     drawer.close()
                 }
             }
@@ -105,7 +89,7 @@ ApplicationWindow {
             item.backPage.connect(stackView.backPage)
         }
 
-        initialItem: DeckBuild.Page {
+        initialItem: Landing.Page {
             id: initial
             Component.onCompleted: stackView.connectStackActions(initial)
         }
