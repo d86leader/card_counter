@@ -66,6 +66,9 @@ MC.Page {
         anchors.left: parent.left
         anchors.right: parent.right
 
+        // open page on deck listing
+        currentIndex: 1
+
         TabButton {
             text: qsTr("All Cards")
         }
