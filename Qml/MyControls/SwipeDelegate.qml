@@ -41,10 +41,13 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Controls.impl 2.2
 import QtQuick.Templates 2.2 as T
+import QtQuick.Controls.Material 2.2
+import QtQuick.Controls.Material.impl 2.2
 
 T.SwipeDelegate {
     id: control
 
+    property bool hasBorder: true
     property string deleteDirection: "left"
 
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
@@ -71,14 +74,29 @@ T.SwipeDelegate {
     }
 
     background: Rectangle {
-        color: control.visualFocus
-            ? (control.down ? Default.focusPressedColor : Default.delegateFocusColor)
-            : (control.down ? Default.delegatePressedColor : Default.backgroundColor)
+        implicitHeight: 48
 
+        color: Default.backgroundColor
         border.width: 1
-        // actually this looks a bit crappy on the left and right. Maybe
-        // just draw top and bottom borders with rectangles?
-        border.color: "#dddddd"
+        border.color: hasBorder ? "#dddddd" : color
+
+        Rectangle {
+            width: parent.width
+            height: parent.height
+            visible: control.highlighted
+            color: Default.delegateFocusColor
+        }
+
+        Ripple {
+            width: parent.width
+            height: parent.height
+
+            clip: visible
+            pressed: control.pressed
+            anchor: control
+            active: control.down || control.visualFocus || control.hovered
+            color: control.Material.rippleColor
+        }
     }
 
     ListView.onRemove: SequentialAnimation {
