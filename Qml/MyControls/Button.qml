@@ -45,6 +45,7 @@ T.Button {
     id: control
 
     property bool hasBorder: false
+    property alias horizontalAlignment: contentItem.horizontalAlignment
 
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentItem.implicitWidth + leftPadding + rightPadding)
@@ -57,6 +58,7 @@ T.Button {
     rightPadding: padding + 2
 
     contentItem: Text {
+        id: contentItem
         text: control.text
         font: control.font
         opacity: enabled || control.highlighted || control.checked ? 1 : 0.3
