@@ -28,6 +28,9 @@ ApplicationWindow {
                         drawer.open()
                     }
                 }
+
+                Keys.onBackPressed: stackView.pop()
+                Keys.onEscapePressed: stackView.pop()
             }
 
             Label {
