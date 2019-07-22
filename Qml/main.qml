@@ -29,8 +29,8 @@ ApplicationWindow {
                     }
                 }
 
-                Keys.onBackPressed: stackView.pop()
-                Keys.onEscapePressed: stackView.pop()
+                Keys.onBackPressed: stackView.backPage()
+                Keys.onEscapePressed: stackView.backPage()
             }
 
             Label {
@@ -58,7 +58,7 @@ ApplicationWindow {
                 text: qsTr("Deck builder")
                 width: parent.width
                 onClicked: {
-                    stackView.push("DeckBuild/Page.qml")
+                    stackView.openPage("DeckBuild/Page.qml", {})
                     drawer.close()
                 }
             }
@@ -66,7 +66,7 @@ ApplicationWindow {
                 text: qsTr("Game view")
                 width: parent.width
                 onClicked: {
-                    stackView.push("GameView/Page.qml")
+                    stackView.openPage("GameView/Page.qml", {})
                     drawer.close()
                 }
             }
@@ -74,7 +74,7 @@ ApplicationWindow {
                 text: qsTr("View all cards")
                 width: parent.width
                 onClicked: {
-                    stackView.push("DeckBuild/CardsOnlyPage.qml")
+                    stackView.openPage("DeckBuild/CardsOnlyPage.qml", {})
                     drawer.close()
                 }
             }
@@ -83,7 +83,32 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: DeckBuild.Page {}
+
+        function openPage(item, properties) {
+            var newItem = stackView.push(item, properties)
+            if (newItem == null) {
+                console.log("Couldn't create a page!")
+            } else {
+                connectStackActions(newItem)
+            }
+        }
+
+        function backPage() {
+            var should = stackView.currentItem.beforeClose()
+            if (should) {
+                stackView.pop()
+            }
+        }
+
+        function connectStackActions(item) {
+            item.openPage.connect(stackView.openPage)
+            item.backPage.connect(stackView.backPage)
+        }
+
+        initialItem: DeckBuild.Page {
+            id: initial
+            Component.onCompleted: stackView.connectStackActions(initial)
+        }
         anchors.fill: parent
     }
 }
