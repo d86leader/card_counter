@@ -2,17 +2,23 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import "../MyControls" as MC
 import "../Common" as C
+import "./OpenCardEditor.js" as Open
 
 // List all cards from all decks
 
 C.CardListing {
     id: listView
 
+    // to enable forward-backward stack movement
+    property Item page
+
     footer: MC.Button {
         width: parent.width
         text: qsTr("Create card")
         onClicked: {
             console.log("create card")
+            var item = Qt.resolvedUrl("../CardEdit/Page.qml")
+            page.openPage(item, {})
         }
     }
 
@@ -46,6 +52,24 @@ C.CardListing {
         swipe.onCompleted: {
             console.log("add " + model.title)
             listView.model.remove(index)
+        }
+
+        onPressAndHold: contextMenu.open()
+
+        CardContextMenu {
+            id: contextMenu
+            onEditChosen: {
+                var opener = function(item, props){page.openPage(item, props)}
+                Open.openEditor(model, opener)
+            }
+            onCloneChosen: {
+                console.log("Clone card " + model.title)
+                var opener = function(item, props){page.openPage(item, props)}
+                Open.openEditor(model, opener)
+            }
+            onDeleteChosen: {
+                listView.model.remove(index)
+            }
         }
     }
 }

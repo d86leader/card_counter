@@ -3,8 +3,10 @@ import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.1
 import "../MyControls" as MC
 import "../Common" as C
+import "./OpenCardEditor.js" as Open
 
 MC.Page {
+    id: page
     title: qsTr("All cards")
 
     C.CardListing {
@@ -28,28 +30,19 @@ MC.Page {
 
             onPressAndHold: contextMenu.open()
 
-            Menu {
+            CardContextMenu {
                 id: contextMenu
-
-                MenuItem {
-                    text: qsTr("Edit card")
-                    onClicked: {
-                        console.log("edit card " + model.title)
-                    }
+                onEditChosen: {
+                    var opener = function(item, props){page.openPage(item, props)}
+                    Open.openEditor(model, opener)
                 }
-
-                MenuItem {
-                    text: qsTr("Clone card")
-                    onClicked: {
-                        console.log("Clone card " + model.title)
-                    }
+                onCloneChosen: {
+                    console.log("Clone card " + model.title)
+                    var opener = function(item, props){page.openPage(item, props)}
+                    Open.openEditor(model, opener)
                 }
-
-                MenuItem {
-                    text: qsTr("Delete card")
-                    onClicked: {
-                        listView.model.remove(index)
-                    }
+                onDeleteChosen: {
+                    listView.model.remove(index)
                 }
             }
         }

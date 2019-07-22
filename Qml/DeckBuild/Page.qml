@@ -4,6 +4,7 @@ import QtQuick.Dialogs 1.1
 import "../MyControls" as MC
 
 MC.Page {
+    id: mainPage
     title: "Deck build"
 
     toolButtons: ToolButton {
@@ -54,8 +55,8 @@ MC.Page {
             value: view.currentIndex
         }
 
-        CardListing {model: someModel; clip: true}
-        DeckListing {model: someModel; clip: true}
+        CardListing {model: someModel; clip: true; page: mainPage}
+        DeckListing {model: someModel; clip: true; page: mainPage}
     }
 
     // tab switcher
