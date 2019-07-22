@@ -35,7 +35,24 @@ MC.Page {
                 horizontalAlignment: Text.AlignLeft
 
                 onClicked: {
-                    console.log("edit name")
+                    renameDialog.open()
+                }
+
+                Dialog {
+                    id: renameDialog
+                    title: qsTr("Rename")
+
+                    TextField {
+                        id: nameLabel
+                        // avoid binding loops with one assignment
+                        Component.onCompleted: {text = card.title}
+                    }
+
+                    standardButtons: StandardButton.Ok | StandardButton.Cancel
+                    onAccepted: {
+                        card.title = nameLabel.text
+                    }
+                    onRejected: {}
                 }
             }
         }
