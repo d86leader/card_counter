@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.1
+import CppTypes 1.0
 import "../MyControls" as MC
 import "../Common" as C
 import "./OpenCardEditor.js" as Open
@@ -13,7 +14,7 @@ MC.Page {
         id: listView
         anchors.fill: parent
 
-        model: someModel
+        model: SqlTableModel {}
 
         footer: MC.Button {
             width: parent.width
