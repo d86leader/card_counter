@@ -4,8 +4,16 @@
 #include <QQmlEngine>
 
 
+inline auto dbFromName(const QString& name) -> QSqlDatabase
+{
+	auto db = QSqlDatabase::addDatabase("QSQLITE", "TestDb");
+	db.setDatabaseName(name);
+	return db;
+}
+
+
 SqlTableModel::SqlTableModel(QObject* parent)
-	: QSqlRelationalTableModel(parent)
+	: QSqlRelationalTableModel(parent, dbFromName("test.db"))
 {
 }
 
