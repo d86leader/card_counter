@@ -31,6 +31,8 @@ public:
 	auto roleNames() const -> QHash<int, QByteArray> override {return m_roles;}
 
 	Q_INVOKABLE bool remove(int index);
+	Q_INVOKABLE bool create(int index);
+	Q_INVOKABLE bool clone(int index);
 
 	static auto regType(const char* uri) -> void;
 };

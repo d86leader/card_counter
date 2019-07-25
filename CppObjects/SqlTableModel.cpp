@@ -52,6 +52,7 @@ auto SqlTableModel::setData(const QModelIndex& index
 		auto&& tableIndex = this->index(index.row(), role - Qt::UserRole);
 		result = QSqlRelationalTableModel::setData(tableIndex, data, Qt::EditRole);
 	}
+	submit();
 	return result;
 }
 
@@ -84,4 +85,25 @@ bool SqlTableModel::remove(int index)
 	if (not r) qDebug() << "didn't delete";
 	endRemoveRows();
 	return r;
+}
+
+
+bool SqlTableModel::create(int index)
+{
+	return insertRows(index, 1);
+}
+
+
+Q_INVOKABLE bool SqlTableModel::clone(int index)
+{
+	let existing = record(index);
+	if (existing.isEmpty()) return false;
+	if (not create(index)) return false;
+	submit();
+	for (int i = 0; i < existing.count(); ++i)
+	{
+		let ind = this->index(index, i);
+		setData(ind, existing.value(i), Qt::UserRole + i);
+	}
+	return true;
 }
