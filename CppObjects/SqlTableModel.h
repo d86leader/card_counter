@@ -12,6 +12,7 @@ class SqlTableModel : public QSqlRelationalTableModel
 	           NOTIFY tableNameChanged)
 private:
 	QHash<int, QByteArray> m_roles;
+	QVector<int> m_role_codes;
 	QString m_tableName;
 
 signals:
@@ -28,6 +29,8 @@ public:
 		-> bool override;
 	auto populateRoles() -> void;
 	auto roleNames() const -> QHash<int, QByteArray> override {return m_roles;}
+
+	Q_INVOKABLE bool remove(int index);
 
 	static auto regType(const char* uri) -> void;
 };
