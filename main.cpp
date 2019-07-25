@@ -3,6 +3,7 @@
 #include <QCommandLineParser>
 #include <QDebug>
 
+#include "Backend/database.h"
 #include "CppObjects/AppControl.h"
 #include "CppObjects/SqlTableModel.h"
 
@@ -11,6 +12,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     auto&& app = QGuiApplication(argc, argv);
+
+	Database::init();
 
     // register qml cpp types
     auto cppTypesUri = "CppTypes";

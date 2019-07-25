@@ -14,7 +14,7 @@ MC.Page {
         id: listView
         anchors.fill: parent
 
-        model: SqlTableModel {}
+        model: SqlTableModel {tableName: "cards"}
 
         footer: MC.Button {
             width: parent.width

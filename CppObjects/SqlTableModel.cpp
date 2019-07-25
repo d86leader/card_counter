@@ -2,18 +2,12 @@
 
 #include <QSqlRecord>
 #include <QQmlEngine>
-
-
-inline auto dbFromName(const QString& name) -> QSqlDatabase
-{
-	auto db = QSqlDatabase::addDatabase("QSQLITE", "TestDb");
-	db.setDatabaseName(name);
-	return db;
-}
+#include <QDebug>
+#include "Backend/database.h"
 
 
 SqlTableModel::SqlTableModel(QObject* parent)
-	: QSqlRelationalTableModel(parent, dbFromName("test.db"))
+	: QSqlRelationalTableModel(parent, Database::connect())
 {
 }
 
@@ -22,9 +16,10 @@ auto SqlTableModel::setTableName(const QString& name) -> void
 {
 	submit();
 	m_tableName = name;
-	emit tableNameChanged(name);
+	setTable(name);
 	populateRoles();
 	select();
+	emit tableNameChanged(name);
 }
 
 
@@ -32,7 +27,7 @@ auto SqlTableModel::data(const QModelIndex& index, int role) const
 	-> QVariant
 {
 	if (not index.isValid())  return QVariant();
-	if (index.row() > rowCount()) return QVariant();
+	if (index.row() > rowCount())  return QVariant();
 	if (role < Qt::UserRole)  return QSqlQueryModel::data(index, role);
 
 	return record(index.row()).value(role - Qt::UserRole);
