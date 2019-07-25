@@ -20,7 +20,7 @@ MC.Page {
             width: parent.width
             text: qsTr("Create card")
             onClicked: {
-                console.log("create card")
+                listView.model.create(listView.model.rowCount())
             }
         }
 
@@ -38,7 +38,7 @@ MC.Page {
                     Open.openEditor(model, opener)
                 }
                 onCloneChosen: {
-                    console.log("Clone card " + model.title)
+                    listView.model.clone(index)
                     var opener = function(item, props){page.openPage(item, props)}
                     Open.openEditor(model, opener)
                 }
@@ -46,40 +46,6 @@ MC.Page {
                     listView.model.remove(index)
                 }
             }
-        }
-    }
-
-    ListModel {
-        id: someModel
-        ListElement {
-            title: "Card 1"
-        }
-        ListElement {
-            title: "Card 2"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
         }
     }
 }

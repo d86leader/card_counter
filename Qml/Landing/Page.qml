@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.1
+import CppTypes 1.0
 import "../MyControls" as MC
 
 
@@ -12,7 +13,7 @@ MC.Page {
         id: listView
         anchors.fill: parent
 
-        model: someModel
+        model: SqlTableModel {tableName: "games"}
 
         ScrollBar.vertical: ScrollBar {
              policy: ScrollBar.AsNeeded
@@ -22,7 +23,7 @@ MC.Page {
             width: parent.width
             text: qsTr("Create deck")
             onClicked: {
-                console.log("create deck")
+                listView.model.create(listView.model.rowCount())
             }
         }
 
@@ -53,16 +54,14 @@ MC.Page {
                 MenuItem {
                     text: qsTr("Clone deck")
                     onClicked: {
+                        listView.model.clone(index)
                         var item = Qt.resolvedUrl("../DeckBuild/Page.qml")
                         page.openPage(item, {})
                     }
                 }
                 MenuItem {
                     text: qsTr("Delete deck")
-                    onClicked: {
-                        var item = Qt.resolvedUrl("../DeckBuild/Page.qml")
-                        page.openPage(item, {})
-                    }
+                    onClicked: deleteDialog.open()
 
                     MessageDialog {
                         id: deleteDialog
@@ -77,19 +76,6 @@ MC.Page {
                     }
                 }
             }
-        }
-    }
-
-    ListModel {
-        id: someModel
-        ListElement {
-            title: "Deck 1"
-        }
-        ListElement {
-            title: "Deck 2"
-        }
-        ListElement {
-            title: "Deck 3"
         }
     }
 }

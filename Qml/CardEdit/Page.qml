@@ -10,7 +10,7 @@ MC.Page {
     title: qsTr("Edit %1").arg(card.title)
 
     // what we're editing
-    property var card: {title: "test card"}
+    property var card
 
     Flickable {
         anchors.fill: parent
