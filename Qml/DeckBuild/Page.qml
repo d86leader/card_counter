@@ -9,38 +9,6 @@ MC.Page {
     title: "Deck build"
     property alias gameId: commonModel.gameId
 
-    toolButtons: ToolButton {
-        // a menu with several deck options
-        text: "⋮"
-        onClicked: menu.open()
-
-        Menu {
-            id: menu
-
-            MenuItem {
-                text: qsTr("Change name")
-                onClicked: renameDialog.open()
-
-                Dialog {
-                    id: renameDialog
-                    title: qsTr("Rename")
-
-                    TextField {
-                        id: nameLabel
-                        // avoid binding loops with one assignment
-                        Component.onCompleted: {text = "Old name"}
-                    }
-
-                    standardButtons: StandardButton.Ok | StandardButton.Cancel
-                    onAccepted: {
-                        console.log("Renamed: " + nameLabel.text)
-                    }
-                    onRejected: {}
-                }
-            }
-        }
-    }
-
     // two tabs: cards to add to deck, and cards already in deck
     SwipeView {
         id: view
