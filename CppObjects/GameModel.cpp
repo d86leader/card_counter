@@ -173,7 +173,7 @@ auto GameModel::setGameId(int id) -> void
 	{
 		let rowid = q.value(0).toInt();
 		let title = q.value(1).toString();
-		m_shop->   m_cards.push_back({100, rowid, title});
+		m_shop->   m_cards.push_back({10000, rowid, title});
 		m_deck->   m_cards.push_back({0, rowid, title});
 		m_hand->   m_cards.push_back({0, rowid, title});
 		m_discard->m_cards.push_back({0, rowid, title});
