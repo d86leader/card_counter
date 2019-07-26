@@ -6,6 +6,16 @@ import "../Common" as C
 C.CardListing {
     id: listView
 
+    header: null
+
+    footer: MC.Button {
+        width: parent.width
+        text: qsTr("Sway all")
+        onClicked: {
+            listView.model.dropAll()
+        }
+    }
+
     delegate: MC.SwipeDelegate {
         id: swipeDelegate
         width: parent.width
@@ -15,7 +25,7 @@ C.CardListing {
                 text: model.title
             }
             Label {
-                text: qsTr("%1%").arg(model.probability * 100)
+                text: qsTr("%1: %2%").arg(model.amount).arg(model.probability * 100)
             }
         }
 
@@ -30,6 +40,7 @@ C.CardListing {
             borderColor: swipeDelegate.background.border.color
 
             SwipeDelegate.onClicked: {
+                listView.model.pick(index)
                 console.log("picked")
             }
         }
@@ -45,7 +56,7 @@ C.CardListing {
             borderColor: swipeDelegate.background.border.color
 
             SwipeDelegate.onClicked: {
-                listView.model.remove(index)
+                listView.model.banish(index)
                 console.log("banish")
             }
         }

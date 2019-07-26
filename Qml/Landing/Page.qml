@@ -35,7 +35,7 @@ MC.Page {
             onClicked: {
                 // start a game
                 var item = Qt.resolvedUrl("../GameView/Page.qml")
-                var props = {}
+                var props = {"gameId": model.rowid}
                 page.openPage(item, props)
             }
 
