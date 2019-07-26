@@ -22,9 +22,7 @@ C.CardListing {
         width: parent.width
         text: qsTr("Create card")
         onClicked: {
-            console.log("create card")
-            var item = Qt.resolvedUrl("../CardEdit/Page.qml")
-            page.openPage(item, {})
+            listView.model.create(listView.model.rowCount())
         }
     }
 
@@ -56,7 +54,6 @@ C.CardListing {
 
         // delete without pressing button, but immediately on drag completion
         swipe.onCompleted: {
-            console.log("add " + model.title)
             listView.model.moveToSibling(index)
         }
 
@@ -69,7 +66,7 @@ C.CardListing {
                 Open.openEditor(model, opener)
             }
             onCloneChosen: {
-                console.log("Clone card " + model.title)
+                listView.model.clone(index)
                 var opener = function(item, props){page.openPage(item, props)}
                 Open.openEditor(model, opener)
             }
