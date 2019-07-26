@@ -48,7 +48,8 @@ MC.Page {
                     text: qsTr("Edit deck")
                     onClicked: {
                         var item = Qt.resolvedUrl("../DeckBuild/Page.qml")
-                        page.openPage(item, {})
+                        var props = {"gameId": model.rowid}
+                        page.openPage(item, props)
                     }
                 }
                 MenuItem {
@@ -56,7 +57,8 @@ MC.Page {
                     onClicked: {
                         listView.model.clone(index)
                         var item = Qt.resolvedUrl("../DeckBuild/Page.qml")
-                        page.openPage(item, {})
+                        var props = {"gameId": model.rowid}
+                        page.openPage(item, props)
                     }
                 }
                 MenuItem {

@@ -12,6 +12,12 @@ C.CardListing {
     // to enable forward-backward stack movement
     property Item page
 
+    Binding {
+        target: model
+        property: "pattern"
+        value: searchStr
+    }
+
     footer: MC.Button {
         width: parent.width
         text: qsTr("Create card")
@@ -51,7 +57,7 @@ C.CardListing {
         // delete without pressing button, but immediately on drag completion
         swipe.onCompleted: {
             console.log("add " + model.title)
-            listView.model.remove(index)
+            listView.model.moveToSibling(index)
         }
 
         onPressAndHold: contextMenu.open()

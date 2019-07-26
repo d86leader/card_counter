@@ -15,11 +15,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
         CppObjects/SqlTableModel.h \
+        CppObjects/DeckBuildModel.h \
         Backend/database.h \
         defines.h
 
 SOURCES += \
         CppObjects/SqlTableModel.cpp \
+        CppObjects/DeckBuildModel.cpp \
         Backend/database.cpp \
         main.cpp
 

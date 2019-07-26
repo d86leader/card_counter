@@ -5,6 +5,7 @@
 
 #include "Backend/database.h"
 #include "CppObjects/SqlTableModel.h"
+#include "CppObjects/DeckBuildModel.h"
 
 
 int main(int argc, char *argv[])
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
     // register qml cpp types
     auto cppTypesUri = "CppTypes";
 	SqlTableModel::regType(cppTypesUri);
+	DeckBuildModel::regType(cppTypesUri);
 
     auto&& engine = QQmlApplicationEngine();
 #ifdef QT_DEBUG

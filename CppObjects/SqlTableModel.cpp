@@ -28,14 +28,15 @@ auto SqlTableModel::getPattern() const -> QString
 {
 	return m_pattern.mid(1, m_pattern.length() - 2);
 }
+
 // replace all occurences of char. Use it for escaping
 auto escapeAll(QString& str, QChar c) -> void
 {
 	int pos = str.indexOf(c);
 	while (pos != -1)
 	{
-		str.insert(pos, '\\');
-		pos = str.indexOf(c, pos + 2);
+		str.replace(pos, '_');
+		pos = str.indexOf(c, pos + 1);
 	}
 }
 
@@ -49,13 +50,17 @@ auto SqlTableModel::setPattern(const QString& arg) -> void
 	m_pattern.push_back('%');
 	emit patternChanged(arg);
 
-	setFilter("title LIKE '" + m_pattern + "'");
+	this->commitPattern("title LIKE '" + m_pattern + "'");
 }
 auto SqlTableModel::resetPattern() -> void
 {
 	m_pattern = "%";
 	emit patternChanged("");
-	setFilter("");
+	this->commitPattern("");
+}
+auto SqlTableModel::commitPattern(const QString& pattern) -> void
+{
+	setFilter(pattern);
 }
 
 

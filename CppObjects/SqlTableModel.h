@@ -19,6 +19,11 @@ private:
 	QString m_tableName;
 	QString m_pattern;
 
+protected:
+	// set pattern as filter. Children may override and do some pattern
+	// preprocessing
+	virtual auto commitPattern(const QString&) -> void;
+
 signals:
 	void tableNameChanged(const QString&);
 	void patternChanged(const QString&);

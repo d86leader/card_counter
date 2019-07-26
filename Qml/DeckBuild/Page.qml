@@ -1,11 +1,13 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.1
+import CppTypes 1.0
 import "../MyControls" as MC
 
 MC.Page {
     id: mainPage
     title: "Deck build"
+    property alias gameId: commonModel.gameId
 
     toolButtons: ToolButton {
         // a menu with several deck options
@@ -55,8 +57,20 @@ MC.Page {
             value: view.currentIndex
         }
 
-        CardListing {model: someModel; clip: true; page: mainPage}
-        DeckListing {model: someModel; clip: true; page: mainPage}
+        CardListing {
+            model: commonModel.notIncludedModel
+            clip: true
+            page: mainPage
+        }
+        DeckListing {
+            model: commonModel.deckModel
+            clip: true
+            page: mainPage
+        }
+    }
+
+    DeckBuildModel {
+        id: commonModel
     }
 
     // tab switcher
@@ -74,40 +88,6 @@ MC.Page {
         }
         TabButton {
             text: qsTr("Deck")
-        }
-    }
-
-    ListModel {
-        id: someModel
-        ListElement {
-            title: "Card 1"
-        }
-        ListElement {
-            title: "Card 2"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
-        }
-        ListElement {
-            title: "Card 3"
         }
     }
 }
