@@ -4,7 +4,6 @@
 #include <QDebug>
 
 #include "Backend/database.h"
-#include "CppObjects/AppControl.h"
 #include "CppObjects/SqlTableModel.h"
 
 
@@ -17,7 +16,6 @@ int main(int argc, char *argv[])
 
     // register qml cpp types
     auto cppTypesUri = "CppTypes";
-	AppControl::regType(cppTypesUri);
 	SqlTableModel::regType(cppTypesUri);
 
     auto&& engine = QQmlApplicationEngine();

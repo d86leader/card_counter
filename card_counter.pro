@@ -14,13 +14,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 HEADERS += \
-        CppObjects/AppControl.h \
         CppObjects/SqlTableModel.h \
         Backend/database.h \
         defines.h
 
 SOURCES += \
-        CppObjects/AppControl.cpp \
         CppObjects/SqlTableModel.cpp \
         Backend/database.cpp \
         main.cpp
