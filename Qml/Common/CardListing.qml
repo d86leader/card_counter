@@ -6,6 +6,9 @@ import QtQuick.Controls 2.2
 ListView {
     id: listView
 
+    property string searchStr: ""
+    signal searchReset()
+
     // make the delegate borders overlap, otherwise they are 2 pixel wide and
     // look shitty
     spacing: -1
@@ -26,6 +29,21 @@ ListView {
 
             placeholderText: qsTr('<img src="%1">Search')
                 .arg("qrc:/Assets/search.svg")
+
+            Binding {
+                target: listView
+                property: "searchStr"
+                value: searchBar.text
+            }
+
+            // on changing a search string, listview refreshes and grabs focus
+            // for some reason. We make a small delay and grab the focus back
+            onTextChanged: timer.start()
+            Timer {
+                id: timer
+                interval: 1
+                onTriggered: searchBar.focus = true
+            }
         }
     }
 }

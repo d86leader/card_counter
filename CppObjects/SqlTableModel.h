@@ -10,18 +10,26 @@ class SqlTableModel : public QSqlRelationalTableModel
 
 	Q_PROPERTY(QString tableName MEMBER m_tableName WRITE setTableName
 	           NOTIFY tableNameChanged)
+	// search pattern for sqlite LIKE. Kept with % appended on both ends
+	Q_PROPERTY(QString pattern READ getPattern WRITE setPattern
+	           RESET resetPattern NOTIFY patternChanged)
 private:
 	QHash<int, QByteArray> m_roles;
 	QVector<int> m_role_codes;
 	QString m_tableName;
+	QString m_pattern;
 
 signals:
 	void tableNameChanged(const QString&);
+	void patternChanged(const QString&);
 
 public:
 	SqlTableModel(QObject* parent = nullptr);
 
 	auto setTableName(const QString&) -> void;
+	auto getPattern() const -> QString;
+	auto setPattern(const QString&) -> void;
+	auto resetPattern() -> void;
 
 	auto data(const QModelIndex&, int role = Qt::DisplayRole) const
 		-> QVariant override;
