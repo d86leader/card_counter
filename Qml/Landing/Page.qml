@@ -56,10 +56,12 @@ MC.Page {
                     text: qsTr("Clone deck")
                     onClicked: {
                         listView.model.clone(index)
-                        var item = Qt.resolvedUrl("../DeckBuild/Page.qml")
-                        var props = {"gameId": model.rowid}
-                        page.openPage(item, props)
+                        renameDialog.open()
                     }
+                }
+                MenuItem {
+                    text: qsTr("Rename")
+                    onClicked: renameDialog.open()
                 }
                 MenuItem {
                     text: qsTr("Delete deck")
@@ -77,6 +79,22 @@ MC.Page {
                         onRejected: {}
                     }
                 }
+            }
+            Dialog {
+                id: renameDialog
+                title: qsTr("Rename")
+
+                TextField {
+                    id: nameLabel
+                    // avoid binding loops with one assignment
+                    Component.onCompleted: {text = model.title}
+                }
+
+                standardButtons: StandardButton.Ok | StandardButton.Cancel
+                onAccepted: {
+                    model.title = nameLabel.text
+                }
+                onRejected: {}
             }
         }
     }
