@@ -4,6 +4,7 @@
 #include <QStandardPaths>
 #include <QDebug>
 #include <QDir>
+#include <QSqlQuery>
 
 
 constexpr char SqliteConnectionName[] = "CounterDb";
@@ -20,6 +21,18 @@ inline auto throwDbErrWhen(bool condition, const QSqlDatabase& db) -> void
 		throw DatabaseException(db.lastError());
 	}
 }
+// execute a query and throw if there was an error
+inline auto tryExecute(QSqlQuery& query, const QString& text) -> QSqlQuery
+{
+	let success = query.exec(text);
+	if (not success and query.lastError().isValid())
+	{
+		throw DatabaseException(query.lastError());
+	}
+	return query;
+}
+
+
 
 // creates an internal qt connection and returns it. THROWS on error
 auto createQtDatabase(const QString& filename) -> QSqlDatabase
@@ -32,9 +45,9 @@ auto createQtDatabase(const QString& filename) -> QSqlDatabase
 	{
 		QDir().mkdir(dbPath);
 	}
+	qDebug() << dbPath;
 
-//	let dbName = dbPath + filename;
-	let dbName = QString("test.db");
+	let dbName = dbPath + filename;
 	qDebug() << "opening database" << dbName;
 
 	auto db = QSqlDatabase::addDatabase("QSQLITE", SqliteConnectionName);
@@ -46,9 +59,39 @@ auto createQtDatabase(const QString& filename) -> QSqlDatabase
 }
 
 
+auto initDbTables(QSqlDatabase& db) -> QSqlDatabase&
+{
+	let tables = db.tables();
+	if (tables.contains("cards")
+	    and tables.contains("games")
+	    and tables.contains("card_in_game"))
+	{
+		return db;
+	}
+
+	auto q = QSqlQuery(db);
+	tryExecute(q, "create table if not exists cards"
+	              " (rowid integer primary key, title text)");
+	tryExecute(q, "create table if not exists games"
+	              " (rowid integer primary key, title text)");
+	tryExecute(q,
+		" create table if not exists card_in_game"
+		" (card_id int, game_id int"
+		" ,primary key (card_id, game_id)"
+		" ,foreign key (card_id) references cards(rowid)"
+		" ,foreign key (game_id) references games(rowid)"
+		")"
+	);
+	db.commit();
+
+	return db;
+}
+
+
 auto init(const QString& filename) -> QSqlDatabase
 {
-	return createQtDatabase(filename);
+	auto&& db = createQtDatabase(filename);
+	return initDbTables(db);
 }
 
 // returns a connection to counter db
