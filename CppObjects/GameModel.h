@@ -25,10 +25,11 @@ class CommonGameModel : public QAbstractListModel
 	QList<CardData> m_cards;
 	QPointer<CommonGameModel> m_next;
 	QPointer<GameModel> m_parent;
+	int m_total;
 
 	// resorting methods. Up = to 0, down = to -1
-	auto bubbleUp(int from) -> void;
-	auto bubbleDown(int from) -> void;
+	auto bubbleUp(int from) -> int;
+	auto bubbleDown(int from) -> int;
 
 	enum Roles : int
 	{
@@ -36,6 +37,10 @@ class CommonGameModel : public QAbstractListModel
 		,Percentage
 		,Title
 	};
+
+public slots:
+	void resetHappened();
+
 public:
 	CommonGameModel(QObject* parent = nullptr);
 

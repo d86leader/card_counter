@@ -8,6 +8,7 @@
 
 CommonGameModel::CommonGameModel(QObject* parent)
 	: QAbstractListModel(parent)
+	, m_total(0)
 {
 }
 
@@ -32,27 +33,32 @@ GameModel::GameModel(QObject* parent)
 
 auto CommonGameModel::pick(int index) -> void
 {
-	qDebug() << "picked";
+	// here's the thing: bubbleDown invalidates the reference, and it also invalidates old index. So we query again
 	m_cards[index].amount -= 1;
-	bubbleDown(index);
-	// increment in neighbour
+	index = bubbleDown(index);
+	auto& card = m_cards[index];
 	auto& nextCards = m_next->m_cards;
+	// increment in neighbour
 	for (int i = 0; i < nextCards.length(); ++i)
 	{
-		if (nextCards[i].rowid == m_cards[index].rowid)
+		if (nextCards[i].rowid == card.rowid)
 		{
 			nextCards[i].amount += 1;
 			m_next->bubbleUp(i);
-			qDebug() << "set next to" << nextCards[i].amount;
 			break;
 		};
 	}
+	m_total -= 1;
+	m_next->m_total += 1;
+	resetHappened();
+	m_next->resetHappened();
 }
 auto CommonGameModel::banish(int index) -> void
 {
 	m_cards[index].amount -= 1;
 	bubbleDown(index);
-	m_parent->m_total -= 1;
+	m_total -= 1;
+	resetHappened();
 }
 auto CommonGameModel::dropAll() -> void
 {
@@ -69,16 +75,17 @@ auto CommonGameModel::dropAll() -> void
 		// decrement this
 		card.amount = 0;
 	}
+	m_next->m_total += m_total;
+	m_total = 0;
 	// resort neighbour
 	auto& nc = m_next->m_cards;
 	std::sort(nc.begin(), nc.end());
-	m_next->beginResetModel();
-	m_next->endResetModel();
-	beginResetModel(); endResetModel();
+	resetHappened();
+	m_next->resetHappened();
 }
 
 
-auto CommonGameModel::bubbleUp(int from) -> void
+auto CommonGameModel::bubbleUp(int from) -> int
 {
 	int current = from;
 	int next = from - 1;
@@ -88,11 +95,9 @@ auto CommonGameModel::bubbleUp(int from) -> void
 		next -= 1;
 		current -= 1;
 	}
-//	beginMoveRows(QModelIndex(), from, from, QModelIndex(), current);
-//	endMoveRows();
-	beginResetModel(); endResetModel();
+	return current;
 }
-auto CommonGameModel::bubbleDown(int from) -> void
+auto CommonGameModel::bubbleDown(int from) -> int
 {
 	int current = from;
 	int next = from + 1;
@@ -103,7 +108,7 @@ auto CommonGameModel::bubbleDown(int from) -> void
 		next += 1;
 		current += 1;
 	}
-	beginResetModel(); endResetModel();
+	return current;
 }
 
 
@@ -128,7 +133,8 @@ auto CommonGameModel::data(const QModelIndex& indexObj, int role) const -> QVari
 		case Roles::Title:
 			return card.title;
 		case Roles::Percentage:
-			return qreal(card.amount) / qreal(m_parent->m_total);
+			if (m_total == 0) return 0;
+			else return qreal(card.amount) / qreal(m_total);
 		default:
 			return QVariant();
 	}
@@ -184,4 +190,11 @@ auto GameModel::regType(const char* uri) -> void
 {
 	qmlRegisterType<CommonGameModel>(uri, 1, 0, "CommonGameModel");
 	qmlRegisterType<GameModel>(uri, 1, 0, "GameModel");
+}
+
+
+void CommonGameModel::resetHappened()
+{
+	beginResetModel();
+	endResetModel();
 }
