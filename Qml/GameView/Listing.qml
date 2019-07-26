@@ -41,7 +41,6 @@ C.CardListing {
 
             SwipeDelegate.onClicked: {
                 listView.model.pick(index)
-                console.log("picked")
             }
         }
 
@@ -57,7 +56,6 @@ C.CardListing {
 
             SwipeDelegate.onClicked: {
                 listView.model.banish(index)
-                console.log("banish")
             }
         }
     }
