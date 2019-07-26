@@ -3,6 +3,9 @@
 
 #include <QQmlEngine>
 #include <QDebug>
+#include <QSqlQuery>
+#include <QSqlError>
+#include "Backend/database.h"
 
 
 auto CommonModel::commitPattern(const QString& pattern) -> void
@@ -66,15 +69,39 @@ DeckBuildModel::DeckBuildModel(QObject* parent)
 }
 
 
-auto DeckModel::moveToSibling(int) -> void
+auto DeckModel::moveToSibling(int row) -> void
 {
-	qDebug() << "move to sibling";
+	// means delete from deck
+	let cardRowid = data(this->index(row, 0), m_rowidRole);
+	let gameId = parent()->property("gameId");
+
+	QSqlQuery q(Database::connect());
+	q.prepare(" delete from card_in_game"
+	          " where card_id = ? and game_id = ?");
+	q.addBindValue(cardRowid);
+	q.addBindValue(gameId);
+	let r = q.exec();
+	if (not r) qDebug() << q.lastError();
+	select();
+	m_sibling->select();
 }
 
 
-auto NotIncludedModel::moveToSibling(int) -> void
+auto NotIncludedModel::moveToSibling(int row) -> void
 {
-	qDebug() << "move to sibling";
+	// means add to deck
+	let cardRowid = data(this->index(row, 0), m_rowidRole);
+	let gameId = parent()->property("gameId");
+
+	QSqlQuery q(Database::connect());
+	q.prepare(" insert into card_in_game (card_id, game_id)"
+	          " values (?, ?)");
+	q.addBindValue(cardRowid);
+	q.addBindValue(gameId);
+	let r = q.exec();
+	if (not r) qDebug() << q.lastError();
+	select();
+	m_sibling->select();
 }
 
 

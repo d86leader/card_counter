@@ -20,6 +20,7 @@ private:
 	QString m_pattern;
 
 protected:
+	int m_rowidRole = -1;
 	// set pattern as filter. Children may override and do some pattern
 	// preprocessing
 	virtual auto commitPattern(const QString&) -> void;

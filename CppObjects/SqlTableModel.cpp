@@ -107,6 +107,10 @@ auto SqlTableModel::populateRoles() -> void
 		auto&& name = this->headerData(i, Qt::Horizontal).toByteArray();
 		m_roles[Qt::UserRole + i] = name;
 		m_role_codes.push_back(Qt::UserRole + i);
+		if (name == "rowid")
+		{
+			m_rowidRole = Qt::UserRole + i;
+		}
 	}
 }
 
