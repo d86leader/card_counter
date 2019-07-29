@@ -10,21 +10,12 @@ MC.Page {
     id: page
     title: qsTr("All cards")
 
-    C.CardListing {
+    CardListing {
         id: listView
         anchors.fill: parent
 
         model: SqlTableModel {
             tableName: "cards"
-            pattern: listView.searchStr
-        }
-
-        footer: MC.Button {
-            width: parent.width
-            text: qsTr("Create card")
-            onClicked: {
-                listView.model.create(listView.model.rowCount())
-            }
         }
 
         delegate: MC.DelegateButton {
@@ -33,6 +24,7 @@ MC.Page {
             text: model.title
 
             onPressAndHold: contextMenu.open()
+            onClicked: contextMenu.open()
 
             CardContextMenu {
                 id: contextMenu

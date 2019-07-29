@@ -58,6 +58,7 @@ C.CardListing {
         }
 
         onPressAndHold: contextMenu.open()
+        onClicked: contextMenu.open()
 
         CardContextMenu {
             id: contextMenu
