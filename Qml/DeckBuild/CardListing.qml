@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import "../MyControls" as MC
 import "../Common" as C
-import "./OpenCardEditor.js" as Open
 
 // List all cards from all decks
 
@@ -57,22 +56,34 @@ C.CardListing {
             listView.model.moveToSibling(index)
         }
 
-        onPressAndHold: contextMenu.open()
-        onClicked: contextMenu.open()
+        onPressAndHold: contextMenu.open(model, index)
+        onClicked: contextMenu.open(model, index)
 
-        CardContextMenu {
+        Menu {
             id: contextMenu
-            onEditChosen: {
-                var opener = function(item, props){page.openPage(item, props)}
-                Open.openEditor(model, opener)
+
+            MenuItem {
+                text: qsTr("Edit card")
+                onClicked: {
+                    var item = Qt.resolvedUrl("../CardEdit/Page.qml")
+                    var props = {"card": model}
+                    page.openPage(item, props)
+                }
             }
-            onCloneChosen: {
-                listView.model.clone(index)
-                var opener = function(item, props){page.openPage(item, props)}
-                Open.openEditor(model, opener)
+            MenuItem {
+                text: qsTr("Clone card")
+                onClicked: {
+                    listView.model.clone(index)
+                    var props = {"card": model}
+                    var item = Qt.resolvedUrl("../CardEdit/Page.qml")
+                    page.openPage(item, props)
+                }
             }
-            onDeleteChosen: {
-                listView.model.remove(index)
+            MenuItem {
+                text: qsTr("Delete card")
+                onClicked: {
+                    listView.model.remove(index)
+                }
             }
         }
     }

@@ -23,22 +23,35 @@ MC.Page {
             width: parent.width
             text: model.title
 
-            onPressAndHold: contextMenu.open()
-            onClicked: contextMenu.open()
+            onPressAndHold: contextMenu.open(model, index)
+            onClicked: contextMenu.open(model, index)
 
-            CardContextMenu {
+            Menu {
                 id: contextMenu
-                onEditChosen: {
-                    var opener = function(item, props){page.openPage(item, props)}
-                    Open.openEditor(model, opener)
+                readonly property url editPage: Qt.resolvedUrl("../CardEdit/Page.qml")
+
+                MenuItem {
+                    text: qsTr("Edit card")
+                    onClicked: {
+                        var props = {"card": model}
+                        var item = Qt.resolvedUrl("../CardEdit/Page.qml")
+                        page.openPage(item, props)
+                    }
                 }
-                onCloneChosen: {
-                    listView.model.clone(index)
-                    var opener = function(item, props){page.openPage(item, props)}
-                    Open.openEditor(model, opener)
+                MenuItem {
+                    text: qsTr("Clone card")
+                    onClicked: {
+                        listView.model.clone(index)
+                        var props = {"card": model}
+                        var item = Qt.resolvedUrl("../CardEdit/Page.qml")
+                        page.openPage(item, props)
+                    }
                 }
-                onDeleteChosen: {
-                    listView.model.remove(index)
+                MenuItem {
+                    text: qsTr("Delete card")
+                    onClicked: {
+                        listView.model.remove(index)
+                    }
                 }
             }
         }

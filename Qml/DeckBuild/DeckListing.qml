@@ -55,20 +55,33 @@ C.CardListing {
         }
 
         onPressAndHold: contextMenu.open()
+        onClicked: contextMenu.open()
 
-        CardContextMenu {
+        Menu {
             id: contextMenu
-            onEditChosen: {
-                var opener = function(item, props){page.openPage(item, props)}
-                Open.openEditor(model, opener)
+
+            MenuItem {
+                text: qsTr("Edit card")
+                onClicked: {
+                    var item = Qt.resolvedUrl("../CardEdit/Page.qml")
+                    var props = {"card": model}
+                    page.openPage(item, props)
+                }
             }
-            onCloneChosen: {
-                listView.model.clone(index)
-                var opener = function(item, props){page.openPage(item, props)}
-                Open.openEditor(model, opener)
+            MenuItem {
+                text: qsTr("Clone card")
+                onClicked: {
+                    listView.model.clone(index)
+                    var props = {"card": model}
+                    var item = Qt.resolvedUrl("../CardEdit/Page.qml")
+                    page.openPage(item, props)
+                }
             }
-            onDeleteChosen: {
-                listView.model.remove(index)
+            MenuItem {
+                text: qsTr("Delete card")
+                onClicked: {
+                    listView.model.remove(index)
+                }
             }
         }
     }
