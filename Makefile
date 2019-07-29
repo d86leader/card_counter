@@ -1,11 +1,11 @@
-BUILDDIR = build-Desktop-Debug/
+BUILDDIR = build-Desktop_Qt_5_12_2_GCC_64bit-Debug/
 
 all:
 	$(MAKE) -C $(BUILDDIR) $@
 
 initial:
-	mkdir build-Desktop-Debug
-	cd build-Desktop-Debug
+	mkdir $(BUILDDIR)
+	cd $(BUILDDIR)
 	qmake-qt5 ..
 
 %:
