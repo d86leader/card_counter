@@ -18,12 +18,7 @@ ApplicationWindow {
 
             ToolButton {
                 id: toolButton
-                /*text: stackView.depth > 1 ?
-                      '<' : '='
-                   // '<img src="qrc:/Assets/arrow_back.svg">'
-                   //: '<img src="qrc:/Assets/menu.svg">'*/
                 icon.source: stackView.depth > 1 ? "qrc:/Assets/arrow_back.svg" : "qrc:/Assets/menu.svg"
-                font.pixelSize: Qt.application.font.pixelSize * 1.6
                 onClicked: {
                     if (stackView.depth > 1) {
                         stackView.pop()

@@ -1,4 +1,5 @@
-QT += quick sql svg
+QT += quick sql
+android: QT += svg
 CONFIG += c++11
 QMAKE_CXXFLAGS += -Wextra
 
