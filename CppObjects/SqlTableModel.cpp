@@ -145,6 +145,7 @@ Q_INVOKABLE bool SqlTableModel::clone(int index)
 	submit();
 	for (int i = 0; i < existing.count(); ++i)
 	{
+        if (Qt::UserRole + i == m_rowidRole)  continue; //don't clone rowid
 		let ind = this->index(index, i);
 		setData(ind, existing.value(i), Qt::UserRole + i);
 	}
