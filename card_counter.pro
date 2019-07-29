@@ -1,4 +1,4 @@
-QT += quick sql
+QT += quick sql svg
 CONFIG += c++11
 QMAKE_CXXFLAGS += -Wextra
 

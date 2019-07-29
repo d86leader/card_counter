@@ -33,14 +33,18 @@ C.CardListing {
             id: pickLabel
             height: parent.height
             anchors.left: parent.left
+            width: implicitWidth * 2
             text: qsTr("Pick")
 
             color: "#111111" // simple black cuts my eyes idk
             bgColor: "lightgreen"
             borderColor: swipeDelegate.background.border.color
 
-            SwipeDelegate.onClicked: {
-                listView.model.pick(index)
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    listView.model.pick(index)
+                }
             }
         }
 
@@ -48,14 +52,18 @@ C.CardListing {
             id: deleteLabel
             height: parent.height
             anchors.right: parent.right
+            width: implicitWidth * 2
             text: qsTr("Banish")
 
             color: "white"
             bgColor: "tomato"
             borderColor: swipeDelegate.background.border.color
 
-            SwipeDelegate.onClicked: {
-                listView.model.banish(index)
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    listView.model.banish(index)
+                }
             }
         }
     }

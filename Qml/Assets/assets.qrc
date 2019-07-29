@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="Assets/">
         <file>search.svg</file>
+        <file>menu.svg</file>
+        <file>arrow_back.svg</file>
     </qresource>
 </RCC>
 
