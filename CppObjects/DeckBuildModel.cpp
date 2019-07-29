@@ -39,7 +39,7 @@ auto DeckBuildModel::setGameId(int id) -> void
 	m_gameId = id;
 	if (m_deckModel)
 	{
-		m_deckModel->m_filter = CommonModel::createFilter(id);
+        m_deckModel->m_filter = DeckModel::createFilter(id);
 		// force refiltering
 		let pattern = m_deckModel->property("pattern");
 		m_deckModel->setPattern(pattern.toString());
@@ -47,7 +47,7 @@ auto DeckBuildModel::setGameId(int id) -> void
 	if (m_notIncludedModel)
 	{
 		m_notIncludedModel->m_filter =
-			"not " + CommonModel::createFilter(id);
+            "not " + DeckModel::createFilter(id);
 		// force refiltering
 		let pattern = m_notIncludedModel->property("pattern");
 		m_notIncludedModel->setPattern(pattern.toString());
