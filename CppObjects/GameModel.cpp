@@ -14,7 +14,7 @@ CommonGameModel::CommonGameModel(QObject* parent)
 
 GameModel::GameModel(QObject* parent)
 	: QObject(parent)
-	, m_shop(new CommonGameModel(this))
+	, m_shop(new ShopModel(this))
 	, m_deck(new CommonGameModel(this))
 	, m_hand(new CommonGameModel(this))
 	, m_discard(new CommonGameModel(this))
@@ -54,6 +54,7 @@ auto CommonGameModel::pick(int index) -> void
 	// increment in neighbour
 	auto& card = m_cards[index];
 	m_next->incrementById(card.rowid);
+    resetHappened();
 }
 auto CommonGameModel::banish(int index) -> void
 {
@@ -175,7 +176,7 @@ auto GameModel::setGameId(int id) -> void
 	{
 		let rowid = q.value(0).toInt();
 		let title = q.value(1).toString();
-		m_shop->   m_cards.push_back({10000, rowid, title});
+        m_shop->   m_cards.push_back({0, rowid, title});
 		m_deck->   m_cards.push_back({0, rowid, title});
 		m_hand->   m_cards.push_back({0, rowid, title});
 		m_discard->m_cards.push_back({0, rowid, title});
@@ -219,7 +220,7 @@ auto ShopModel::data(const QModelIndex& indexObj, int role) const		-> QVariant
 	switch (role)
 	{
 		case Roles::Amount:
-			return "";
+            return card.amount;
 		case Roles::Percentage:
 			return "";
 		case Roles::Title:
@@ -231,7 +232,9 @@ auto ShopModel::data(const QModelIndex& indexObj, int role) const		-> QVariant
 
 auto ShopModel::pick(int index) -> void
 {
-	auto& card = m_cards[index];
+    m_cards[index].amount += 1;
+    resetHappened();
+    auto& card = m_cards[index];
 	m_next->incrementById(card.rowid);
 }
 

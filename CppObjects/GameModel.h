@@ -79,7 +79,7 @@ class GameModel : public QObject
 {
 	Q_OBJECT
 
-	Q_PROPERTY(CommonGameModel* shop    MEMBER m_shop    CONSTANT)
+	Q_PROPERTY(ShopModel*       shop    MEMBER m_shop    CONSTANT)
 	Q_PROPERTY(CommonGameModel* deck    MEMBER m_deck    CONSTANT)
 	Q_PROPERTY(CommonGameModel* hand    MEMBER m_hand    CONSTANT)
 	Q_PROPERTY(CommonGameModel* discard MEMBER m_discard CONSTANT)
@@ -88,8 +88,9 @@ class GameModel : public QObject
 private:
 	int m_total;
 	int m_gameId;
+	QPointer<ShopModel> m_shop;
 	QPointer<CommonGameModel>
-		m_shop, m_deck, m_hand, m_discard;
+		m_deck, m_hand, m_discard;
 
 signals:
 	void gameIdChanged(int);
