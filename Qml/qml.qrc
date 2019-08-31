@@ -3,11 +3,9 @@
         <file>main.qml</file>
         <file>CardEdit/Page.qml</file>
         <file>Common/CardListing.qml</file>
-        <file>DeckBuild/CardContextMenu.qml</file>
         <file>DeckBuild/CardListing.qml</file>
         <file>DeckBuild/CardsOnlyPage.qml</file>
         <file>DeckBuild/DeckListing.qml</file>
-        <file>DeckBuild/OpenCardEditor.js</file>
         <file>DeckBuild/Page.qml</file>
         <file>GameView/Listing.qml</file>
         <file>GameView/Page.qml</file>
