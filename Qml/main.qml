@@ -26,9 +26,6 @@ ApplicationWindow {
                         drawer.open()
                     }
                 }
-
-                Keys.onBackPressed: stackView.backPage()
-                Keys.onEscapePressed: stackView.backPage()
             }
 
             Label {
@@ -94,4 +91,12 @@ ApplicationWindow {
         }
         anchors.fill: parent
     }
+
+    onClosing: {
+        close.accepted = false
+        if (stackView.depth > 1)  stackView.backPage()
+        else                      window.lower() // doesn't work, but fuck it
+    }
+    //Keys.onBackPressed: stackView.backPage()
+    Keys.onEscapePressed: stackView.backPage()
 }
