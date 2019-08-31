@@ -22,6 +22,7 @@ class CommonGameModel : public QAbstractListModel
 		{ return amount > other.amount; }
 	};
 
+protected:
 	QList<CardData> m_cards;
 	QPointer<CommonGameModel> m_next;
 	QPointer<GameModel> m_parent;
@@ -40,6 +41,7 @@ class CommonGameModel : public QAbstractListModel
 
 public slots:
 	void resetHappened();
+	void incrementById(int id);
 
 public:
 	CommonGameModel(QObject* parent = nullptr);
@@ -51,11 +53,26 @@ public:
 	//remimplemented to use custom role names
 	auto roleNames() const -> QHash<int, QByteArray> override;
 
-	Q_INVOKABLE void pick(int index);
-	Q_INVOKABLE void banish(int index);
-	Q_INVOKABLE void dropAll();
+	Q_INVOKABLE virtual void pick(int index);
+	Q_INVOKABLE virtual void banish(int index);
+	Q_INVOKABLE virtual void dropAll();
 
 	friend class GameModel;
+};
+
+class ShopModel : public CommonGameModel
+{
+	Q_OBJECT
+
+public:
+	ShopModel(QObject* parent = nullptr);
+
+	auto data(const QModelIndex& index, int role = Qt::DisplayRole) const
+		-> QVariant override;
+	
+	Q_INVOKABLE void pick(int index) override;
+	Q_INVOKABLE void banish(int index) override;
+	Q_INVOKABLE void dropAll() override;
 };
 
 class GameModel : public QObject

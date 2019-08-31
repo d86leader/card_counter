@@ -24,34 +24,36 @@ GameModel::GameModel(QObject* parent)
 	m_hand->m_parent = this;
 	m_discard->m_parent = this;
 
-	m_shop->m_next = m_deck;
+	m_shop->m_next = m_hand;
 	m_deck->m_next = m_hand;
 	m_hand->m_next = m_discard;
 	m_discard->m_next = m_deck; // note that it's not shop
 }
 
 
+auto CommonGameModel::incrementById(int id) -> void
+{
+	for (int i = 0; i < m_cards.length(); ++i)
+	{
+		if (m_cards[i].rowid == id)
+		{
+			m_cards[i].amount += 1;
+			bubbleUp(i);
+			break;
+		};
+	}
+	m_total += 1;
+	resetHappened();
+}
+
 auto CommonGameModel::pick(int index) -> void
 {
 	// here's the thing: bubbleDown invalidates the reference, and it also invalidates old index. So we query again
 	m_cards[index].amount -= 1;
 	index = bubbleDown(index);
-	auto& card = m_cards[index];
-	auto& nextCards = m_next->m_cards;
 	// increment in neighbour
-	for (int i = 0; i < nextCards.length(); ++i)
-	{
-		if (nextCards[i].rowid == card.rowid)
-		{
-			nextCards[i].amount += 1;
-			m_next->bubbleUp(i);
-			break;
-		};
-	}
-	m_total -= 1;
-	m_next->m_total += 1;
-	resetHappened();
-	m_next->resetHappened();
+	auto& card = m_cards[index];
+	m_next->incrementById(card.rowid);
 }
 auto CommonGameModel::banish(int index) -> void
 {
@@ -197,4 +199,45 @@ void CommonGameModel::resetHappened()
 {
 	beginResetModel();
 	endResetModel();
+}
+
+
+ShopModel::ShopModel(QObject* parent)
+	: CommonGameModel(parent)
+{
+}
+
+
+auto ShopModel::data(const QModelIndex& indexObj, int role) const		-> QVariant
+{
+	if (not indexObj.isValid())  return QVariant();
+	let index = indexObj.row();
+	if (index > m_cards.length())  return QVariant();
+
+	const auto& card = m_cards[index];
+
+	switch (role)
+	{
+		case Roles::Amount:
+			return "";
+		case Roles::Percentage:
+			return "";
+		case Roles::Title:
+			return card.title;
+		default:
+			return QVariant();
+	}
+}
+
+auto ShopModel::pick(int index) -> void
+{
+	auto& card = m_cards[index];
+	m_next->incrementById(card.rowid);
+}
+
+auto ShopModel::banish(int) -> void
+{
+}
+auto ShopModel::dropAll() -> void
+{
 }
