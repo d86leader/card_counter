@@ -25,7 +25,8 @@ C.CardListing {
                 text: model.title
             }
             Label {
-                text: qsTr("%1: %2%").arg(model.amount).arg(model.probability * 100)
+                // band-aid fix for shop
+                text: model.probability === "" ? model.amount : qsTr("%1: %2%").arg(model.amount).arg(model.probability * 100)
             }
         }
 
@@ -43,6 +44,7 @@ C.CardListing {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    console.log("clicked")
                     listView.model.pick(index)
                 }
             }
@@ -60,8 +62,10 @@ C.CardListing {
             borderColor: swipeDelegate.background.border.color
 
             MouseArea {
+                z: 10000
                 anchors.fill: parent
                 onClicked: {
+                    console.log("clicked")
                     listView.model.banish(index)
                 }
             }
