@@ -18,7 +18,7 @@ class CommonGameModel : public QAbstractListModel
 		int rowid;
 		QString title;
 
-        inline auto operator<(const CardData& other) const -> bool
+		inline auto operator<(const CardData& other) const -> bool
 		{ return amount > other.amount; }
 	};
 
